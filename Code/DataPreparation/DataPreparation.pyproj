@@ -26,10 +26,16 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="arima.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="events_counts_analysing.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="monthly_milk.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="processing_series.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rnn_building.py" />
