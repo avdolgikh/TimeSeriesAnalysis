@@ -31,8 +31,8 @@ if __name__ == '__main__':
     milk = pd.read_csv(r'..\..\Data\monthly-milk-production.csv', ';', index_col=['month'], parse_dates=['month'], dayfirst=True)
     preprocess(milk, "milk")
     convert_2_daily_values(milk, "milk")
-    plot(milk.index, milk["milk"])
-    print(milk["milk"].iloc[:10])    
+    #plot(milk.index, milk["milk"])
+    #print(milk["milk"].iloc[:10])    
 
     dfull = dfuller(milk["milk"])
     print(dfull[1]) # check whether dfull[1] < 0.2 ???
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     
     # 1.1. Stabilization of Variation
     #milk["milk"] = milk["milk"].apply(np.log)
-    milk["milk"] = boxcox1p(milk["milk"], 0.25) # from scipy import stats, stats.boxcox(data)
+    #milk["milk"] = boxcox1p(milk["milk"], 0.25) # from scipy import stats, stats.boxcox(data)
     # lambda = 0.25?
     #print(milk["milk"].iloc[:10])
     #plot(milk, "milk")
@@ -51,18 +51,21 @@ if __name__ == '__main__':
     # https://machinelearningmastery.com/remove-trends-seasonality-difference-transform-python/
     # 1.2.1. Season diff
     milk["milk"] = milk["milk"].diff(periods=12)
+    milk = milk.iloc[12:, :]
+    dfull = dfuller(milk["milk"])
+    print(dfull[1])
     # 1.2.2. diff
     milk["milk"] = milk["milk"].diff()
     #print(milk["milk"].iloc[:30])
-    milk = milk.iloc[13:, :]
+    milk = milk.iloc[1:, :]
     #print(milk["milk"].iloc[:30])
     dfull = dfuller(milk["milk"])
     print(dfull[1])
-    plot(milk.index, milk["milk"])
+    #plot(milk.index, milk["milk"])
 
     # https://www.statsmodels.org/dev/generated/statsmodels.tsa.arima_model.ARMA.html
-    arma = tsa.arima_model.ARMA(milk["milk"], order=(2, 2))
-    print(arma.fit())
+    #arma = tsa.arima_model.ARMA(milk["milk"], order=(2, 2))
+    #print(arma.fit())
 
     # https://www.coursera.org/learn/data-analysis-applications/lecture/8yR4G/arima
     
@@ -75,10 +78,10 @@ if __name__ == '__main__':
     # Correlograms:
     # https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/
     from statsmodels.graphics.tsaplots import plot_acf, plot_pacf # https://www.statsmodels.org/stable/generated/statsmodels.graphics.tsaplots.plot_acf.html
-    plot_acf(milk["milk"], lags=50)
+    plot_acf(milk["milk"], lags=100)
     plt.grid(True)
     plt.show()
-    plot_pacf(milk["milk"], lags=50)
+    plot_pacf(milk["milk"], lags=100)
     plt.grid(True)
     plt.show()
 

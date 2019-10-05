@@ -55,3 +55,8 @@ if __name__ == '__main__':
     residuals = pd.DataFrame(model_fit.resid)
     residuals.plot()
     plt.show()
+
+    plot(milk.index, milk["milk"])
+    plot( list(range(100)), model_fit.predict(start=1, end=100) )
+
+
